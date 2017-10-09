@@ -665,7 +665,7 @@ char * mystrdup(char * src, int ofs)
 int imageExists(char *aBaseFilename, int aTwig)
 {
 	
-	char *ext[] = { "TGA", "PNG", "JPG", "JPEG", "BMP", "PSD", "GIF", "HDR", "PIC", "PPM", "PGM"};
+	char *ext[] = { "tga", "png", "jpg", "jpeg", "bmp", "psd", "gif", "hdr", "pic", "ppm", "pgm"};
 	char temp[2048];
 	int i;
 	for (i = 0; i < sizeof(ext)/sizeof(char*); i++)
@@ -701,7 +701,39 @@ int imageExists(char *aBaseFilename, int aTwig)
 }
 
 #ifdef __linux__
-void findtextures(char *aBaseDir, int aTwig) {} // TODO
+#include <dirent.h>
+
+void findtextures(char *aBaseDir, int aTwig)
+{
+	char path[2048];
+	sprintf(path, "%s", aBaseDir);
+
+	DIR * dir = opendir(path);
+
+	if (dir == NULL)
+		return;
+
+	dirent * ent = readdir(dir);
+
+	if (ent == NULL)
+		return;
+
+	do
+	{
+		if (strcmp(ent->d_name, ".") != 0 &&
+			strcmp(ent->d_name, "..") != 0)
+		{
+			if (ent->d_type == DT_DIR)
+			{
+				sprintf(path, "%s/%s/diffuse", aBaseDir, ent->d_name);
+				imageExists(path, aTwig);
+			}
+		}
+	}
+	while ((ent = readdir(dir)) != NULL);
+
+	closedir(dir);
+}
 #else // #ifdef __linux__
 void findtextures(char *aBaseDir, int aTwig)
 {
@@ -760,8 +792,13 @@ void initGraphicsAssets()
 	progress();
 	tex_preset[7] = load_texture("data/preset8.jpg");
 
+#ifdef __linux__
+	findtextures("data/twig", 1);
+	findtextures("data/trunk", 0);
+#else
 	findtextures("data\\twig", 1);
 	findtextures("data\\trunk", 0);
+#endif
 
 	// keep shader sources in memory in case we need to re-build them on resize
 	gBaseShader.init("data/base.vs", "data/base.fs");

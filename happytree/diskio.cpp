@@ -54,7 +54,7 @@ void exportobj()
 int loadcustomtexture(int &aTexHandle, int aClamp)
 {
 	char * file = NULL;
-	if (NFD_OpenDialog("jpg,png,tga,bmp,psd,gif,hdr,pic", NULL, &file) == NFD_OKAY)
+	if (NFD_OpenDialog("jpeg,jpg,png,tga,bmp,psd,gif,hdr,pic,ppm,pgm", NULL, &file) == NFD_OKAY)
 	{
 		aTexHandle = load_texture(file, aClamp);
 		free(file);
