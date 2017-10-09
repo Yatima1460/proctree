@@ -26,7 +26,63 @@
 */
 
 #include "happytree.h"
+#include <assert.h>
 
+#ifdef __linux__
+#include <nfd.h>
+
+void exporth()
+{
+	char * file = NULL;
+	if (NFD_SaveDialog("h", NULL, &file) == NFD_OKAY)
+	{
+		export_h(file);
+		free(file);
+	}
+}
+
+void exportobj()
+{
+	char * file = NULL;
+	if (NFD_SaveDialog("obj", NULL, &file) == NFD_OKAY)
+	{
+		export_obj(file);
+		free(file);
+	}
+}
+
+int loadcustomtexture(int &aTexHandle, int aClamp)
+{
+	char * file = NULL;
+	if (NFD_OpenDialog("jpg,png,tga,bmp,psd,gif,hdr,pic", NULL, &file) == NFD_OKAY)
+	{
+		aTexHandle = load_texture(file, aClamp);
+		free(file);
+		return 1;
+	}
+	return 0;
+}
+
+void loadproject()
+{
+	char * file = NULL;
+	if (NFD_OpenDialog("htr", NULL, &file) == NFD_OKAY)
+	{
+		load_htr(file);
+		free(file);
+	}
+}
+
+void saveproject()
+{
+	char * file = NULL;
+	if (NFD_SaveDialog("htr", NULL, &file) == NFD_OKAY)
+	{
+		save_htr(file);
+		free(file);
+	}
+}
+#else // #ifdef __linux__
 void exporth()
 {
 	SDL_SysWMinfo sysinfo;
@@ -168,6 +224,7 @@ void saveproject()
 		save_htr(temp);
 	}
 }
+#endif // #ifdef __linux__
 
 void export_obj(char *aFilename)
 {
@@ -281,7 +338,7 @@ void load_htr(char *aFilename)
 	if (sig != 0x00525448)
 	{
 		fclose(f);
-		MessageBoxA(NULL, "Error loading file: signature not recognized.", "Error loading file", MB_ICONERROR);
+		assert(!"Error loading file: signature not recognized.");
 		return;
 	}
 	fread(&gTree.mProperties.mClumpMax, 1, sizeof(float), f);

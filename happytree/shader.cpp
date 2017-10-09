@@ -25,6 +25,7 @@
 *
 */
 #include "happytree.h"
+#include <assert.h>
 
 Shader::Shader()
 {
@@ -53,25 +54,43 @@ void Shader::build()
 	char *vs_src_p[1] = { mVSSrc };
 	char *fs_src_p[1] = { mFSSrc };
 
+	int status = GL_TRUE;
+
 	int vs_obj = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vs_obj, 1, (const char**)vs_src_p, &mVSLen);
 	glCompileShader(vs_obj);
+	glGetShaderiv(vs_obj, GL_COMPILE_STATUS, &status);
+	if (status == GL_FALSE)
+	{
+		char temp[2048];
+		glGetShaderInfoLog(vs_obj, 2048, &status, temp);
+		printf("%s\n", temp);
+		assert(!"Vertex shader compile failure");
+	}
 
 	int fs_obj = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fs_obj, 1, (const char**)fs_src_p, &mFSLen);
 	glCompileShader(fs_obj);
+	glGetShaderiv(fs_obj, GL_COMPILE_STATUS, &status);
+	if (status == GL_FALSE)
+	{
+		char temp[2048];
+		glGetShaderInfoLog(fs_obj, 2048, &status, temp);
+		printf("%s\n", temp);
+		assert(!"Fragment shader compile failure");
+	}
 
 	mShaderHandle = glCreateProgram();
 	glAttachShader(mShaderHandle, vs_obj);
 	glAttachShader(mShaderHandle, fs_obj);
 	glLinkProgram(mShaderHandle);
-	int status;
 	glGetProgramiv(mShaderHandle, GL_LINK_STATUS, &status);
 	if (status == GL_FALSE)
 	{
 		char temp[2048];
 		glGetProgramInfoLog(mShaderHandle, 2048, &status, temp);
-		MessageBoxA(NULL, temp, "Shader link failure", MB_ICONERROR);
+		printf("%s\n", temp);
+		assert(!"Shader link failure");
 	}
 }
 
@@ -83,5 +102,10 @@ void Shader::use()
 int Shader::uniformLocation(char *aName)
 {
 	return glGetUniformLocation(mShaderHandle, aName);
+}
+
+int Shader::attributeLocation(char *aName)
+{
+	return glGetAttribLocation(mShaderHandle, aName);
 }
 

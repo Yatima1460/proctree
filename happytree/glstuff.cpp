@@ -200,6 +200,9 @@ void setup_rendering(int tick)
 void draw_floor(Shader &shader)
 {
 	GLuint matrixpos = shader.uniformLocation("RotationMatrix");
+	GLuint attr0 = shader.attributeLocation("vertexPosition");
+	GLuint attr1 = shader.attributeLocation("vertexNormal");
+	GLuint attr2 = shader.attributeLocation("vertexTexCoord");
 
 	glm::mat4 mat;
 
@@ -219,11 +222,11 @@ void draw_floor(Shader &shader)
 	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, gFloorVertVBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(attr0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, gFloorNormalVBO);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(attr1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, gFloorUVVBO);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(attr2, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 256);
 

@@ -1,10 +1,9 @@
-#version 330
+#version 130
 
-in vec3 color;
-in vec2 texcoord;
-in vec4 origcoord;
+varying vec3 color;
+varying vec2 texcoord;
+varying vec4 origcoord;
 
-layout(location = 0) out vec4 FragColor;
 uniform sampler2D tex;
 uniform sampler2D shadowmap;
 uniform bool EnableTexture;
@@ -92,5 +91,5 @@ void main()
         s = vec4(1);
     }
 
-    FragColor = vec4(color, 1.0) * t * s;
+    gl_FragColor = vec4(color, 1.0) * t * s;
 }

@@ -40,4 +40,5 @@ public:
 	void build();
 	void use();
 	int uniformLocation(char *aName);
+	int attributeLocation(char *aName);
 };

@@ -1,8 +1,7 @@
-#version 330
+#version 130
 
-in vec2 texcoord;
+varying vec2 texcoord;
 
-layout(location = 0) out vec4 FragColor;
 uniform sampler2D tex;
 
 void main()
@@ -14,5 +13,5 @@ void main()
     if (t.a < 0.5)
         discard;
     
-    FragColor = vec4(1.0);
+    gl_FragColor = vec4(1.0);
 }

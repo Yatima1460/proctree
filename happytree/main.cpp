@@ -391,7 +391,7 @@ void draw_imgui()
 		int i;
 		for (i = 0; i < 8; i++)
 		{
-			ImGui::Image((ImTextureID)tex_preset[i], previewsize);
+			ImGui::Image((ImTextureID)(intptr_t)tex_preset[i], previewsize);
 			char temp[80];
 			sprintf(temp, "Load preset %d", i + 1);
 			if (ImGui::Button(temp))
@@ -411,7 +411,7 @@ void draw_imgui()
 		int i;
 		for (i = 0; i < gTwigTextureCount; i++)
 		{
-			ImGui::Image((ImTextureID)gTwigTexture[i], previewsize);
+			ImGui::Image((ImTextureID)(intptr_t)gTwigTexture[i], previewsize);
 			if (ImGui::Button(gTwigTextureName[i]))
 			{
 				gTwigTextureIndex = i;
@@ -430,7 +430,7 @@ void draw_imgui()
 		int i;
 		for (i = 0; i < gTrunkTextureCount; i++)
 		{
-			ImGui::Image((ImTextureID)gTrunkTexture[i], previewsize);
+			ImGui::Image((ImTextureID)(intptr_t)gTrunkTexture[i], previewsize);
 			if (ImGui::Button(gTrunkTextureName[i]))
 			{
 				gTrunkTextureIndex = i;
@@ -700,6 +700,9 @@ int imageExists(char *aBaseFilename, int aTwig)
 	return 0;
 }
 
+#ifdef __linux__
+void findtextures(char *aBaseDir, int aTwig) {} // TODO
+#else // #ifdef __linux__
 void findtextures(char *aBaseDir, int aTwig)
 {
 	WIN32_FIND_DATAA fdFile;
@@ -730,7 +733,7 @@ void findtextures(char *aBaseDir, int aTwig)
 	FindClose(h);
 
 }
-
+#endif // #ifdef __linux__
 
 void initGraphicsAssets()
 {

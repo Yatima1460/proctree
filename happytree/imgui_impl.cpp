@@ -134,7 +134,7 @@ static void LoadFontsTexture()
 	GLuint tex_id;
 	if (io.Fonts->TexID)
 	{
-		tex_id = (int)io.Fonts->TexID;
+		tex_id = (int)(intptr_t)io.Fonts->TexID;
 	}
 	else
 	{
@@ -152,13 +152,13 @@ static void LoadFontsTexture()
 void ImImpl_InitGL()
 {
 	const GLchar *vertex_shader =
-		"#version 330\n"
+		"#version 130\n"
 		"uniform mat4 ProjMtx;\n"
-		"in vec2 Position;\n"
-		"in vec2 UV;\n"
-		"in vec4 Color;\n"
-		"out vec2 Frag_UV;\n"
-		"out vec4 Frag_Color;\n"
+		"attribute vec2 Position;\n"
+		"attribute vec2 UV;\n"
+		"attribute vec4 Color;\n"
+		"varying vec2 Frag_UV;\n"
+		"varying vec4 Frag_Color;\n"
 		"void main()\n"
 		"{\n"
 		"	Frag_UV = UV;\n"
@@ -167,14 +167,13 @@ void ImImpl_InitGL()
 		"}\n";
 
 	const GLchar* fragment_shader =
-		"#version 330\n"
+		"#version 130\n"
 		"uniform sampler2D Texture;\n"
-		"in vec2 Frag_UV;\n"
-		"in vec4 Frag_Color;\n"
-		"out vec4 Out_Color;\n"
+		"varying vec2 Frag_UV;\n"
+		"varying vec4 Frag_Color;\n"
 		"void main()\n"
 		"{\n"
-		"	Out_Color = Frag_Color * texture( Texture, Frag_UV.st);\n"
+		"	gl_FragColor = Frag_Color * texture( Texture, Frag_UV.st);\n"
 		"}\n";
 
 	shader_handle = glCreateProgram();

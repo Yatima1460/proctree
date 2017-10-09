@@ -25,7 +25,9 @@
 *
 */
 
+#ifdef _WIN32
 #include <Windows.h> // file i/o dialogs
+#endif
 #include "toolkit.h"
 #include "SDL_syswm.h"
 #include "../proctree/proctree.h"
