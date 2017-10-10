@@ -319,7 +319,7 @@ void draw_imgui()
 		ImGui::SliderFloat("Kink", &gTree.mProperties.mTrunkKink, -2.0f, 2.0f);
 		ImGui::SliderFloat("Taper rate", &gTree.mProperties.mTaperRate, 0.5f, 2.0f);
 		ImGui::SliderFloat("Twists", &gTree.mProperties.mTwistRate, 0.01f, 10.0f, "%.3f",4.0f);
-		ImGui::SliderFloat("Trunk length", &gTree.mProperties.mTrunkLength, 0.01f, 5.0f);
+		ImGui::SliderFloat("Trunk length", &gTree.mProperties.mTrunkLength, 0.01f, 20.0f);
 	}
 	ONCE(ImGui::OpenNextNode(1));
 	if (ImGui::TreeNode("Project"))
@@ -487,8 +487,8 @@ void draw_screen()
 			gCamRotate.z += -gUIState.scroll;
 			if (gCamRotate.z < 5)
 				gCamRotate.z = 5;
-			if (gCamRotate.z > 40)
-				gCamRotate.z = 40;
+			if (gCamRotate.z > 100)
+				gCamRotate.z = 100;
 			gUIState.scroll = 0;
 		}
 	}
