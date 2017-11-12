@@ -2,7 +2,9 @@
 
 This is a liberally licensed procedural tree generator in c++, along with an editor HappyTree.
 
-[![Quick walkthrough of 20150123 version](http://img.youtube.com/vi/XLBvkVMxdS0/0.jpg) (youtube video)](http://www.youtube.com/watch?v=XLBvkVMxdS0) 
+<img width="800px" src="https://i.imgur.com/OVB5mUp.png" />
+
+[https://youtube.com/watch?v=XLBvkVMxdS0](https://youtube.com/watch?v=XLBvkVMxdS0)
 
 The procedural generation itself is a port from https://github.com/supereggbert/proctree.js/
 see http://snappytree.com for an online demonstration of the original proctree.js (with webgl). The c++ port is several orders of magnitude faster than the original, and also fixes the UV mapping.
